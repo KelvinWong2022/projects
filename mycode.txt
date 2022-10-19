@@ -1,0 +1,104 @@
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication2
+{
+    public class Client
+    {
+        public string Name { get; set; }
+        public string phone { get; set; }
+        public List<OrderProduct> Product { get; set; }
+    }
+    public class OrderProduct
+    {
+        public string Name { get; set; }
+        public int Qty { get; set; }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var myproduct = new OrderProduct() {Name="Book1",Qty=123 };
+            var myProductList = new List<OrderProduct>();
+            myProductList.Add(myproduct);
+            var myClients = new List<Client>();
+            myClients.Add(new Client() { Name = "Eric", phone = "12345678", Product = myProductList });
+
+
+            var Clients = new List<Client>()
+            {
+                new Client
+                {
+                    Name = "Dick",
+                    phone = "12345678"
+                    ,
+                    Product = new List<OrderProduct>(){
+                     new OrderProduct(){Name="Pen1",Qty=101}
+                    ,new OrderProduct(){Name="Pen2",Qty=102}
+                    ,new OrderProduct(){Name="Pen3",Qty=103}
+                  }
+                }
+                , new Client
+                {
+                    Name = "Jame",
+                    phone = "12345678"
+                    ,
+                    Product = new List<OrderProduct>(){
+                     new OrderProduct(){Name="Pen3",Qty=101}
+                    ,new OrderProduct(){Name="Pen4",Qty=102}
+                    ,new OrderProduct(){Name="Pen5",Qty=103}
+                  }
+                }
+            };
+            //Client account = new Client
+            //{
+            //    Name = "Jame",
+            //    phone = "12345678"
+            //    ,
+            //    Product = new List<OrderProduct>(){
+            //     new OrderProduct(){Name="Pen",Qty=101}
+            //    ,new OrderProduct(){Name="Pen2",Qty=102}
+            //    ,new OrderProduct(){Name="Pen3",Qty=103}
+            //  }
+            //};
+            //OrderProduct[] aa=[];
+//            string json = @" [
+//                {
+//                  'id': 0,
+//                  'item': 'item 0'
+//                },
+//                {
+//                  'id': 1,
+//                  'item': 'item 1'
+//                }
+//              ]";
+            string json = JsonConvert.SerializeObject(Clients, Formatting.Indented);
+           // Client dataTable = JsonConvert.DeserializeObject<Client>(json);
+            var resp = JsonConvert.DeserializeObject<List<Client>>(json);
+            foreach (Client row in resp)
+            {
+                Console.WriteLine(row.Name);
+                foreach (OrderProduct pro in row.Product)
+                {
+                    Console.WriteLine(pro.Name);
+                }
+                Console.WriteLine("---------------------------------------------");
+            }
+//            DataTable dataTable = JsonConvert.DeserializeObject<DataTable>(json);
+//            //DataTable dataTable = dataSet.Tables["Table1"];
+//            foreach (DataRow row in dataTable.Rows)
+//            {
+//                Console.WriteLine(row["id"] + " - " + row["item"]);
+//            }
+           // Console.WriteLine(dataTable.Rows.Count);
+
+           // Console.WriteLine(json);
+            Console.ReadLine();
+        }
+    }
+}
